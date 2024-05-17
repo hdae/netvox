@@ -1,0 +1,25 @@
+version: 3
+
+tasks:
+
+  build.client:
+    dir: .
+    cmds:
+      - pnpm build
+
+  build.core:
+    dir: ./server/netvox_core
+    cmds:
+      - deno_bindgen --release="."
+      - deno task prepare
+      - cargo about generate -c ./about.toml ./about.hbs -o ../../build/LICENSE.netvox_core.html
+      # Fix mod.ts
+      - timeout 30
+
+  build:
+    dir: ./server
+    deps:
+      - build.core
+      - build.client
+    cmds:
+      - deno compile -A -o ../build/netvox.exe --unstable-ffi --include ./src/worker.ts ./src/main.ts

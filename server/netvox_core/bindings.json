@@ -1,0 +1,1 @@
+{"name":"netvox_core","littleEndian":true,"symbols":{"initialize":{"parameters":["str"],"result":"u8","nonBlocking":false},"transcribe":{"parameters":["buffer"],"result":"str","nonBlocking":true}},"typeDefs":{},"tsTypes":{}}

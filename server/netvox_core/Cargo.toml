@@ -1,0 +1,16 @@
+[package]
+name = "netvox_core"
+version = "0.1.0"
+edition = "2021"
+authors = ["Hedo Eudae"]
+license = "MIT"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+anyhow = "1.0.82"
+deno_bindgen = "0.8.1"
+linkme = "0.3.25"
+serde = { version = "1.0.200", features = ["derive"] }
+whisper-rs = { version = "0.11.1", features = ["cuda"] }
