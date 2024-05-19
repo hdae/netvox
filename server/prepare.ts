@@ -14,10 +14,20 @@ if (await Deno.stat(dir_mod).then(stat => stat.isDirectory).catch(() => false)) 
 
 await Deno.mkdir(dir_mod)
 
-await Deno.copyFile(
-    resolve(dirname, "netvox_core", "bindings", "bindings.ts"),
-    resolve(dir_mod, "mod.ts")
+// await Deno.copyFile(
+//     resolve(dirname, "netvox_core", "bindings", "bindings.ts"),
+//     resolve(dir_mod, "mod.ts")
+// )
+
+const mod_file = await Deno.readTextFile(resolve(dirname, "netvox_core", "bindings", "bindings.ts"))
+const mod_fixed = mod_file.replace(
+    "const url = new URL(\".\", import.meta.url)",
+    [
+        "import { toFileUrl } from \"!std/path/mod.ts\"",
+        "const url = new URL(\".\", toFileUrl(Deno.execPath()))",
+    ].join("\n")
 )
+await Deno.writeTextFile(resolve(dir_mod, "mod.ts"), mod_fixed)
 
 for (const ext of ["dll", "so", "dylib"]) {
     const file_lib = resolve(dirname, "netvox_core", "target", "release", `netvox_core.${ext}`)

@@ -1,0 +1,54 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  release:
+    runs-on: windows-latest
+
+    steps:
+
+      - name: disable git eol translation
+        run: git config --global core.autocrlf false
+
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: Install Task
+        uses: arduino/setup-task@v2
+
+      # === Setup Rust ===
+
+      - name: Install Rustup using win.rustup.rs
+        run: |
+          $ProgressPreference = "SilentlyContinue"
+          Invoke-WebRequest https://win.rustup.rs/ -OutFile rustup-init.exe
+          .\rustup-init.exe -y --default-host=x86_64-pc-windows-msvc --default-toolchain=none
+          del rustup-init.exe
+          rustup target add x86_64-pc-windows-msvc
+        shell: powershell
+
+      # === Setup node.js ===
+      - uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      # === Build ===
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run tasks
+        run: task build

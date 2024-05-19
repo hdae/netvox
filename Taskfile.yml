@@ -12,9 +12,7 @@ tasks:
     cmds:
       - deno_bindgen --release="."
       - deno task prepare
-      - cargo about generate -c ./about.toml ./about.hbs -o ../../build/LICENSE.netvox_core.html
-      # Fix mod.ts
-      - timeout 30
+      - cargo about generate -c ./about.toml ./about.hbs -o ../../build/third/LICENSE.netvox_core.html
 
   build:
     dir: ./server
