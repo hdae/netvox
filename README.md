@@ -1,6 +1,6 @@
-# NetVox
+# NetVOX
 
-Whisperで音声を文字起こし、VOICEBOXで合成って感じのやつ。  
+Whisperで音声を文字起こし、VOICEVOXで合成って感じのやつ。  
 完全ローカルで動かせるボイボ専用ゆかりねっとだと思っていただければOK。
 
 ## メリット
